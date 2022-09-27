@@ -1,3 +1,9 @@
+/**
+ * The substitution box.
+ * Input an 4 × 4 matrix to substitute the elements in it with preset table.
+ * @author Klasnov
+ */
+
 public class sBox {
     final static public int ENC = 0;
     final static public int DEC = 1;
@@ -39,6 +45,12 @@ public class sBox {
             new int[] {0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d}
     };
 
+    /**
+     * Substitute a 4 × 4 byte matrix
+     * @param a the matrix needed to be substituted
+     * @param type the process is encryption or decryption, use sBox.ENC or SBox.DEC
+     * @return the matrix has been substituted
+     */
     static public byte[][] bytSst(byte[][] a, int type) {
         byte[][] b = new byte[N][];
         byte temp;
@@ -49,11 +61,10 @@ public class sBox {
                 temp = a[i][j];
                 r = temp >> N;
                 c = temp & 0x0f;
-                if (type == 0) {
-                    b[i][j] = (byte) SST[r][c];
-                }
-                else {
-                    b[i][j] = (byte) AST[r][c];
+                switch (type) {
+                    case ENC -> b[i][j] = (byte) SST[r][c];
+                    case DEC -> b[i][j] = (byte) AST[r][c];
+                    default -> System.out.println("Invalid value of argument type!");
                 }
             }
         }
