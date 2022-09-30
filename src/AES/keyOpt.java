@@ -1,7 +1,5 @@
 package AES;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -32,14 +30,14 @@ public class keyOpt {
 
     public keyOpt() {
         seed = new byte[LEN];
-        getSed();
+        rdSed();
         extKey();
     }
 
     /**
      * Get the seed of encryption's key
      */
-    private void getSed() {
+    private void rdSed() {
         String ipt;
         System.out.println("Please enter the key which contains 16 chars:");
         Scanner scn = new Scanner(System.in);
@@ -79,5 +77,16 @@ public class keyOpt {
                 rnd++;
             }
         }
+    }
+
+    /**
+     * Get the key of one round.
+     * @param i The round number.
+     * @return Key matrix.
+     */
+    public byte[][] getRdKey(int i) {
+        byte[][] keyMtx = new byte[NK][NK];
+        System.arraycopy(key, i * 4, keyMtx, 0, NK);
+        return stdMtx.trs(keyMtx);
     }
 }

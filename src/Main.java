@@ -8,7 +8,5 @@ public class Main {
         System.out.println("Usage Notice: This procedure is the AES password demonstration procedure.");
         System.out.println("***************************$ Statement information $*******************************");
         System.out.println("================ AES cryptographic algorithm program demonstration ================\n");
-
-        aesEnc.run();
     }
 }

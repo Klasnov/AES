@@ -37,11 +37,10 @@ public class mixCol {
             for (int j = 0; j < N; j++) {
                 b[i][j] = 0;
                 for (int k = 0; k < N; k++) {
-                    if (type == MIX) {
-                        b[i][j] ^= mulGF(MXM[i][k], a[k][j]);
-                    }
-                    else {
-                        b[i][j] ^= mulGF(DMM[i][k], a[k][j]);
+                    switch (type) {
+                        case MIX -> b[i][j] ^= mulGF(MXM[i][k], a[k][j]);
+                        case DMX -> b[i][j] ^= mulGF(DMM[i][k], a[k][j]);
+                        default -> System.out.println("Invalid value of argument type!");
                     }
                 }
             }

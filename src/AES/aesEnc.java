@@ -8,15 +8,15 @@ import java.util.ArrayList;
  */
 
 public class aesEnc {
-    private static final int N = 4;
-    private static final int RND = 10;
+    private final int N = 4;
+    private final ArrayList<byte[]> cph = new ArrayList<>();
 
     /**
      * Run the AES encryption algorithm.
      */
-    public static void run() {
+    public void run() {
         ArrayList<byte[]> plt;
-        byte[][] iv, bef, aft, pltMtx;
+        byte[][] iv, bef, pltMtx, aft = new byte[N][N];
         int cnt;
         keyOpt key = new keyOpt();
         cbcWrk cbc = new cbcWrk();
@@ -26,12 +26,14 @@ public class aesEnc {
         for (byte[] p : plt) {
             pltMtx = stdMtx.aryToMtx(p);
             if (cnt != 0) {
-
+                bef = mtxXor(aft, pltMtx);
             }
             else {
                 bef = mtxXor(iv, pltMtx);
-                cnt++;
             }
+            aft = enc(bef, key);
+            cph.add(stdMtx.mtxToAry(aft));
+            cnt++;
         }
     }
 
@@ -41,7 +43,7 @@ public class aesEnc {
      * @param ipt2 The second computed matrix.
      * @return The matrix after XOR operation.
      */
-    private static byte[][] mtxXor(byte[][] ipt1, byte[][] ipt2) {
+    private byte[][] mtxXor(byte[][] ipt1, byte[][] ipt2) {
         byte[][] opt = new byte[][] {new byte[N], new byte[N], new byte[N], new byte[N]};
         int i, j;
         for (i = 0; i < N; i++) {
@@ -50,5 +52,23 @@ public class aesEnc {
             }
         }
         return opt;
+    }
+
+    /**
+     * The core encryption process
+     * @param ipt The input matrix needing to be encrypted.
+     * @param key The keyOpt class used.
+     * @return The matrix after encryption.
+     */
+    private byte[][] enc(byte[][] ipt, keyOpt key) {
+        final int RND = 10;
+        byte[][] tmp = mtxXor(ipt, key.getRdKey(0));
+        for (int i = 1; i <= RND; i++) {
+            tmp = sBox.bytSst(tmp, sBox.ENC);
+            tmp = shfRow.rowSft(tmp, shfRow.LFT);
+            tmp = mixCol.mxCol(tmp, mixCol.MIX);
+            tmp = mtxXor(tmp, key.getRdKey(i));
+        }
+        return tmp;
     }
 }
