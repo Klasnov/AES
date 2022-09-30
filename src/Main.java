@@ -1,7 +1,5 @@
 import AES.*;
 
-import java.io.Reader;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,19 +9,6 @@ public class Main {
         System.out.println("***************************$ Statement information $*******************************");
         System.out.println("================ AES cryptographic algorithm program demonstration ================\n");
 
-        String ipt;
-        while (true) {
-            System.out.println("Enter the key which contains 16 chars: ");
-            Scanner scn = new Scanner(System.in);
-            ipt = scn.nextLine();
-            int len = ipt.length();
-            if (len != 16) {
-                System.out.println("Incorrect length! The key must contain 16 char.");
-            }
-            else {
-                System.out.println("The key you input: " + ipt);
-                break;
-            }
-        }
+        aesEnc.run();
     }
 }

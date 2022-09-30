@@ -3,14 +3,16 @@ package AES;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 /**
- * Extending the keys in all the rounds from the seed.
+ * The operation on the keys in AES algorithm.
  * @author Klasnov
  */
 
-public class extKey {
+public class keyOpt {
     private final int NK = 4;
+    private final int LEN = 16;
     private final int WN = 44;
     private final byte[][] key = new byte[WN][NK];
     private final byte[][] CST = new byte[][] {
@@ -26,10 +28,34 @@ public class extKey {
             new byte[] {0x36, 0x00, 0x00, 0x00}
     };
 
-    public extKey(@NotNull String str) {
-        // Parse the key seed from the input string
-        byte[] seed = str.getBytes(StandardCharsets.UTF_8);
-        // Initialize the W[0] to W[3]
+    private byte[] seed;
+
+    public keyOpt() {
+        seed = new byte[LEN];
+        getSed();
+        extKey();
+    }
+
+    /**
+     * Get the seed of encryption's key
+     */
+    private void getSed() {
+        String ipt;
+        System.out.println("Please enter the key which contains 16 chars:");
+        Scanner scn = new Scanner(System.in);
+        ipt = scn.nextLine();
+        while (ipt.length() != LEN) {
+            System.out.println("Incorrect length! Please enter the key which contains 16 chars:");
+            ipt = scn.nextLine();
+        }
+        System.out.println("The key you input: " + ipt);
+        seed = ipt.getBytes(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Extend the key seed into sufficient keys used in each round
+     */
+    private void extKey() {
         int cnt, tmpIdx;
         byte[] tmpAry;
         for (cnt = 0; cnt < NK; cnt++) {
@@ -53,9 +79,5 @@ public class extKey {
                 rnd++;
             }
         }
-    }
-
-    public static void optKys() {
-
     }
 }
