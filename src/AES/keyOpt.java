@@ -89,4 +89,24 @@ public class keyOpt {
         System.arraycopy(key, i * 4, keyMtx, 0, NK);
         return stdMtx.trs(keyMtx);
     }
+
+    /**
+     * Print all the keys on the screen.
+     */
+    public void prtAllKey() {
+        System.out.println("Round keys..................");
+        int rdKy;
+        for (int i = 0; i < WN; i++) {
+            rdKy = (key[i][0] << 24) & 0x0ff000000;
+            rdKy += (key[i][1] << 16) & 0x0ff0000;
+            rdKy += (key[i][2] << 8) & 0x0ff00;
+            rdKy += key[i][3] & 0x0ff;
+            System.out.print("w[" + i + "] = 0x" + Integer.toHexString(rdKy) + "\t");
+            System.out.print("\t");
+            if ((i + 1) % 4 == 0) {
+                System.out.println();
+            }
+        }
+        System.out.println();
+    }
 }

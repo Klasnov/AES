@@ -40,7 +40,7 @@ public class cbcWrk {
         /* Split the input into many blocks with 16 bytes */
         byte[] pltAll = pltStr.getBytes(StandardCharsets.UTF_8);
         for (i = 0; i < rnd; i++) {
-            tmp = Arrays.copyOfRange(pltAll, i * LEN, (i + 1) * LEN - 1);
+            tmp = Arrays.copyOfRange(pltAll, i * LEN, (i + 1) * LEN);
             this.plt.add(tmp);
         }
         /* Padding the blank space */

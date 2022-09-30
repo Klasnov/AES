@@ -61,7 +61,7 @@ public class sBox {
             b[i] = new byte[N];
             for (j = 0; j < N; j++) {
                 temp = a[i][j];
-                r = temp >> N;
+                r = (temp >>> N) & 0x0f;
                 c = temp & 0x0f;
                 switch (type) {
                     case ENC -> b[i][j] = (byte) SST[r][c];
@@ -82,11 +82,11 @@ public class sBox {
     public static byte slgSst(byte a, int type) {
         int r, c;
         byte b = 0x00;
-        r = a >> 4;
+        r = (a >>> 4) & 0x0f;
         c = a & 0x0f;
         switch (type) {
-            case ENC -> b = (byte) SST[c][r];
-            case DEC -> b = (byte) AST[c][r];
+            case ENC -> b = (byte) SST[r][c];
+            case DEC -> b = (byte) AST[r][c];
             default -> System.out.println("Invalid value of argument type!");
         }
         return b;

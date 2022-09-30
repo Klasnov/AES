@@ -63,7 +63,7 @@ public class mixCol {
             return a;
         }
         /* Make the second multiplier always the smaller one */
-        if (a < b) {
+        if (b < 0) {
             byte tmp = b;
             b = a;
             a = tmp;
@@ -98,7 +98,7 @@ public class mixCol {
                 else {
                     c <<= 1;
                 }
-                d >>= 1;
+                d >>>= 1;
             }
             rlt.add((int) c);
         }
