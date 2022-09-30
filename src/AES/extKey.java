@@ -3,7 +3,6 @@ package AES;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 /**
  * Extending the keys in all the rounds from the seed.
@@ -11,15 +10,20 @@ import java.util.ArrayList;
  */
 
 public class extKey {
-    private final int nk = 4;
-    private final int wn = 44;
-    private final byte[][] key = new byte[wn][nk];
-    private final int[] rndCst = new int[] {
-            0x01000000, 0x02000000,
-            0x04000000, 0x08000000,
-            0x10000000, 0x20000000,
-            0x40000000, 0x80000000,
-            0x1b000000, 0x36000000
+    private final int NK = 4;
+    private final int WN = 44;
+    private final byte[][] key = new byte[WN][NK];
+    private final byte[][] CST = new byte[][] {
+            new byte[] {0x01, 0x00, 0x00, 0x00},
+            new byte[] {0x02, 0x00, 0x00, 0x00},
+            new byte[] {0x04, 0x00, 0x00, 0x00},
+            new byte[] {0x08, 0x00, 0x00, 0x00},
+            new byte[] {0x10, 0x00, 0x00, 0x00},
+            new byte[] {0x20, 0x00, 0x00, 0x00},
+            new byte[] {0x40, 0x00, 0x00, 0x00},
+            new byte[] {(byte) 0x80, 0x00, 0x00, 0x00},
+            new byte[] {0x1b, 0x00, 0x00, 0x00},
+            new byte[] {0x36, 0x00, 0x00, 0x00}
     };
 
     public extKey(@NotNull String str) {
@@ -28,25 +32,30 @@ public class extKey {
         // Initialize the W[0] to W[3]
         int cnt, tmpIdx;
         byte[] tmpAry;
-        for (cnt = 0; cnt < nk; cnt++) {
+        for (cnt = 0; cnt < NK; cnt++) {
             tmpIdx = cnt * 4;
             tmpAry = new byte[] {seed[tmpIdx], seed[tmpIdx + 1], seed[tmpIdx + 2], seed[tmpIdx + 3]};
             key[cnt] = tmpAry;
         }
         // Calculate the rest W[i]
+        int rnd = 0;
+        for (; cnt < WN; cnt++) {
+            if (cnt % NK != 0) {
+                for (int i = 0; i < NK; i++) {
+                    key[cnt][i] = (byte) (key[cnt - NK][i] ^  key[cnt - 1][i]);
+                }
+            }
+            else {
+                for (int i = 0; i < NK; i++) {
+                    key[cnt][i] = (byte) ((sBox.slgSst(key[cnt - 1][(i + 1) % 4], sBox.ENC)
+                            ^ CST[rnd][i]) ^ key[cnt - NK][i]);
+                }
+                rnd++;
+            }
+        }
     }
 
-    private int keyToHex(byte[] k) {
-        return (k[0] << 24) + (k[1] << 16) + (k[2] << 8) + k[3];
-    }
+    public static void optKys() {
 
-    private byte[] keyToByte(int key) {
-        byte b1, b2, b3, b4;
-        return new byte[] {};
-    }
-
-    // Get the keys of AES
-    public byte[][] getKey() {
-        return key;
     }
 }

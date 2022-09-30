@@ -53,7 +53,7 @@ public class sBox {
      * @param type the process is encryption or decryption, use sBox.ENC or SBox.DEC
      * @return the matrix has been substituted
      */
-    static public byte[][] bytSst(byte[][] a, int type) {
+    public static byte[][] bytSst(byte[][] a, int type) {
         byte[][] b = new byte[N][];
         byte temp;
         int i, j, r, c;
@@ -69,6 +69,25 @@ public class sBox {
                     default -> System.out.println("Invalid value of argument type!");
                 }
             }
+        }
+        return b;
+    }
+
+    /**
+     * Substitute just one byte
+     * @param a The substituting byte
+     * @param type Substitution type, use ENC or DEC
+     * @return The substituted byte
+     */
+    public static byte slgSst(byte a, int type) {
+        int r, c;
+        byte b = 0x00;
+        r = a >> 4;
+        c = a & 0x0f;
+        switch (type) {
+            case ENC -> b = (byte) SST[c][r];
+            case DEC -> b = (byte) AST[c][r];
+            default -> System.out.println("Invalid value of argument type!");
         }
         return b;
     }

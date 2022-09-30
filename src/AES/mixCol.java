@@ -31,12 +31,7 @@ public class mixCol {
      * @return The matrix after multiplying
      */
     public static byte[][] mxCol(byte[][] a, int type) {
-        byte[][] b = new byte[][] {
-                new byte[N],
-                new byte[N],
-                new byte[N],
-                new byte[N]
-        };
+        byte[][] b = new byte[N][N];
         /* Matrix multiplication on Galois Field 2 ^ 8 */
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
