@@ -144,8 +144,11 @@ public class aesEnc {
         }
         /* Output the initialization vector and ciphertext */
         FileOutputStream fos = new FileOutputStream(file);
+        fos.write(stdMtx.mtxToAry(cbc.getIV()));
+        fos.write('\n');
         for (byte[] bts : cph) {
             fos.write(bts);
+            fos.write('\n');
         }
         fos.close();
     }
