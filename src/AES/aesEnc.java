@@ -1,6 +1,10 @@
 package AES;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * AES algorithm encryption process
@@ -10,31 +14,26 @@ import java.util.ArrayList;
 public class aesEnc {
     private final int N = 4;
     private final ArrayList<byte[]> cph = new ArrayList<>();
+    private final keyOpt key;
+    private final cbcWrk cbc;
 
-    public static void main(String[] args) {
-        aesEnc aes = new aesEnc();
-        aes.run();
+    public aesEnc() throws IOException {
+        this.key = new keyOpt();
+        this.cbc = new cbcWrk();
+        run();
     }
 
     /**
      * Run the AES encryption algorithm.
      */
-    public void run() {
+    private void run() throws IOException {
         ArrayList<byte[]> plt;
         byte[][] iv, bef, pltMtx, aft = new byte[N][N];
         int cnt;
         /* Input data */
-        keyOpt key = new keyOpt();
-        cbcWrk cbc = new cbcWrk();
         key.prtAllKey();
         plt = cbc.getBlk();
-        //iv = cbc.getIV();
-        iv = new byte[][] {
-                new byte[] {0x00, 0x00, 0x00, 0x00},
-                new byte[] {0x00, 0x00, 0x00, 0x00},
-                new byte[] {0x00, 0x00, 0x00, 0x00},
-                new byte[] {0x00, 0x00, 0x00, 0x00}
-        };
+        iv = cbc.getIV();
         /* Encryption process */
         System.out.println("AES encrypting..................");
         cnt = 0;
@@ -52,6 +51,8 @@ public class aesEnc {
         }
         /* Output the ciphertext each byte */
         prtCph();
+        /* Record the ciphertext into the specified file */
+        wrtFil();
     }
 
     /**
@@ -83,7 +84,9 @@ public class aesEnc {
         for (int i = 1; i <= RND; i++) {
             tmp = sBox.bytSst(tmp, sBox.ENC);
             tmp = shfRow.rowSft(tmp, shfRow.LFT);
-            tmp = mixCol.mxCol(tmp, mixCol.MIX);
+            if (i != RND) {
+                tmp = mixCol.mxCol(tmp, mixCol.MIX);
+            }
             tmp = mtxXor(tmp, key.getRdKey(i));
         }
         return tmp;
@@ -107,5 +110,43 @@ public class aesEnc {
             }
             System.out.println();
         }
+    }
+
+    /**
+     * Write the ciphertext into the specified file.
+     */
+    private void wrtFil() throws IOException {
+        boolean ext;
+        String filNam;
+        File file;
+        /* Specify the record file */
+        Scanner scn = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nEnter the file name for saving the ciphertext, as \"test.txt\":");
+            filNam = scn.nextLine();
+            file = new File(filNam);
+            ext = !file.createNewFile();
+            /* If the file has already existed, assure whether to cover it */
+            if (ext) {
+                String chc;
+                System.out.println("The file has already existed. Are you sure you want to cover it?");
+                do {
+                    System.out.print("Please enter 'Y'/'N' to indicate yes or no: ");
+                    chc = scn.nextLine();
+                } while ((chc.compareTo("Y") != 0) && (chc.compareTo("N") != 0));
+                if (chc.compareTo("Y") == 0) {
+                    break;
+                }
+            }
+            else {
+                break;
+            }
+        }
+        /* Output the initialization vector and ciphertext */
+        FileOutputStream fos = new FileOutputStream(file);
+        for (byte[] bts : cph) {
+            fos.write(bts);
+        }
+        fos.close();
     }
 }

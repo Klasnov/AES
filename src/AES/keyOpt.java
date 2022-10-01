@@ -39,7 +39,7 @@ public class keyOpt {
      */
     private void rdSed() {
         String ipt;
-        System.out.println("Please enter the key which contains 16 chars:");
+        System.out.println("\nPlease enter the key which contains 16 chars:");
         Scanner scn = new Scanner(System.in);
         ipt = scn.nextLine();
         while (ipt.length() != LEN) {
@@ -101,7 +101,12 @@ public class keyOpt {
             rdKy += (key[i][1] << 16) & 0x0ff0000;
             rdKy += (key[i][2] << 8) & 0x0ff00;
             rdKy += key[i][3] & 0x0ff;
-            System.out.print("w[" + i + "] = 0x" + Integer.toHexString(rdKy) + "\t");
+            if (i > 9) {
+                System.out.print("w[" + i + "] = 0x" + Integer.toHexString(rdKy) + "\t");
+            }
+            else {
+                System.out.print("w[0" + i + "] = 0x" + Integer.toHexString(rdKy) + "\t");
+            }
             System.out.print("\t");
             if ((i + 1) % 4 == 0) {
                 System.out.println();

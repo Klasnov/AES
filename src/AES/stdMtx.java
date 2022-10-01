@@ -46,7 +46,9 @@ public class stdMtx {
     public static byte[] mtxToAry(byte[][] ipt) {
         byte[] opt = new byte[N * N];
         for (int i = 0; i < N; i++) {
-            System.arraycopy(ipt[i], 0, opt, i * 4, N);
+            for (int j = 0; j < N; j++) {
+                opt[i * N + j] = ipt[j][i];
+            }
         }
         return opt;
     }

@@ -19,7 +19,7 @@ public class cbcWrk {
         this.plt = new ArrayList<>();
         this.intVec = new byte[LEN];
         rdPadPlt();
-        // rdIV();
+        rdIV();
     }
 
     /**
@@ -30,7 +30,7 @@ public class cbcWrk {
         int i, j, len, rnd, ram;
         byte[] tmp, pad;
         /* Read in all the input */
-        System.out.println("Enter your plaintext: ");
+        System.out.println("\nPlease enter the plaintext: ");
         Scanner scn = new Scanner(System.in);
         pltStr = scn.nextLine();
         System.out.println("The plaintext you input: " + pltStr);
@@ -67,15 +67,27 @@ public class cbcWrk {
      * Read in the initialization of CBC work method.
      */
     private void rdIV() {
-        System.out.println("Please enter the initialization vector, which must contain 16 chars:");
-        String ipt;
+        String chc;
         Scanner scn = new Scanner(System.in);
-        ipt = scn.nextLine();
-        while (ipt.length() != LEN) {
-            System.out.println("Invalid length! Please enter an initialization vector with 16 chars:");
+        System.out.println("\nDo you need to set the initial vector manually? " +
+                "(Otherwise it will be zeroed by default)");
+        do {
+            System.out.print("Please enter 'Y'/'N' to indicate yes or no: ");
+            chc = scn.nextLine();
+        } while ((chc.compareTo("Y") != 0) && (chc.compareTo("N") != 0));
+        if (chc.compareTo("Y") == 0) {
+            System.out.println("Please enter the initialization vector, which must contain 16 chars:");
+            String ipt;
             ipt = scn.nextLine();
+            while (ipt.length() != LEN) {
+                System.out.println("Invalid length! Please enter an initialization vector with 16 chars:");
+                ipt = scn.nextLine();
+            }
+            intVec = ipt.getBytes(StandardCharsets.UTF_8);
         }
-        intVec = ipt.getBytes(StandardCharsets.UTF_8);
+        else {
+            intVec = new byte[LEN];
+        }
     }
 
     /**
