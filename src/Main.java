@@ -11,5 +11,6 @@ public class Main {
         System.out.println("***************************$ Statement information $*******************************");
         System.out.println("================ AES cryptographic algorithm program demonstration ================");
         aesEnc enc = new aesEnc();
+        filOpt fil = new filOpt(enc.getCbc(), enc.getCph());
     }
 }
