@@ -19,7 +19,7 @@ public class cbcWrk {
         this.plt = new ArrayList<>();
         this.intVec = new byte[LEN];
         rdPadPlt();
-        rdIV();
+        // rdIV();
     }
 
     /**

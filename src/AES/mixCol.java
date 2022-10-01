@@ -38,8 +38,8 @@ public class mixCol {
                 b[i][j] = 0;
                 for (int k = 0; k < N; k++) {
                     switch (type) {
-                        case MIX -> b[i][j] ^= mulGF(MXM[i][k], a[k][j]);
-                        case DMX -> b[i][j] ^= mulGF(DMM[i][k], a[k][j]);
+                        case MIX -> b[i][j] = (byte) ((b[i][j] ^ mulGF(MXM[i][k], a[k][j])) & 0x0ff);
+                        case DMX -> b[i][j] = (byte) ((b[i][j] ^ mulGF(DMM[i][k], a[k][j])) & 0x0ff);
                         default -> System.out.println("Invalid value of argument type!");
                     }
                 }
@@ -63,7 +63,8 @@ public class mixCol {
             return a;
         }
         /* Make the second multiplier always the smaller one */
-        if (b < 0) {
+        boolean flag = ((a & 0x080) != 0x080) && ((b & 0x080) == 0x080);
+        if (flag) {
             byte tmp = b;
             b = a;
             a = tmp;
@@ -74,38 +75,40 @@ public class mixCol {
                 (byte) 0x10, (byte) 0x20, (byte) 0x40, (byte) 0x80};
         ArrayList<Integer> idx = new ArrayList<>();
         for (int i = 0; i < p.length; i++) {
-            if ((b & p[i]) == p[i]) {
+            if (((b & p[i]) & 0x0ff) == p[i]) {
                 idx.add(i);
             }
         }
         /* Use the distribution to do the multiplication */
-        int tmp;
-        byte prm = 0x1b;
-        ArrayList<Integer> rlt = new ArrayList<>();
+        byte c, d, tmp, prm = 0x1b;
+        ArrayList<Byte> rlt = new ArrayList<>();
         for (int i : idx) {
-            byte c = a, d = (byte) (0x01 << i);
+            c = a;
+            d = (byte) ((0x01 << i) & 0x0ff);
             while (d != 0x01) {
                 // If the first multiplier outset with 1
-                if ((c & 0x80) == 0x80) {
+                if ((c & 0x080) == 0x080) {
                     // Operations on the first multiplier
                     tmp = c;
                     tmp <<= 1;
                     tmp &= 0x0ff;
-                    c = (byte) tmp;
-                    c ^= prm;
+                    tmp ^= prm;
+                    c = (byte) (tmp & 0x0ff);
                 }
                 // If the first multiplier outset with 0
                 else {
                     c <<= 1;
+                    c = (byte) (c & 0x0ff);
                 }
                 d >>>= 1;
             }
-            rlt.add((int) c);
+            rlt.add(c);
         }
         /* Do the addition */
         byte rtn = 0x00;
-        for (int i : rlt) {
-            rtn ^= i;
+        for (byte bt : rlt) {
+            rtn ^= bt;
+            rtn = (byte) (rtn & 0x0ff);
         }
         return rtn;
     }

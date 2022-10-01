@@ -51,7 +51,7 @@ public class aesEnc {
             cnt++;
         }
         /* Output the ciphertext each byte */
-        prtPlt();
+        prtCph();
     }
 
     /**
@@ -92,7 +92,7 @@ public class aesEnc {
     /**
      * Print the ASCII code of ciphertext each byte
      */
-    private void prtPlt() {
+    private void prtCph() {
         System.out.println("The ASCII code value of the encrypted ciphertext is:");
         int tmp;
         for (byte[] c : cph) {
