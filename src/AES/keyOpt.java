@@ -33,7 +33,7 @@ public class keyOpt {
     }
 
     /**
-     * Get the seed of encryption's key
+     * Get the seed of encryption's key.
      */
     public void rdSed() {
         String ipt;
@@ -49,7 +49,7 @@ public class keyOpt {
     }
 
     /**
-     * Extend the key seed into sufficient keys used in each round
+     * Extend the key seed into sufficient keys used in each round.
      */
     public void extKey() {
         int cnt, tmpIdx;
@@ -85,14 +85,14 @@ public class keyOpt {
     public byte[][] getRdKey(int i) {
         byte[][] keyMtx = new byte[NK][NK];
         System.arraycopy(key, i * 4, keyMtx, 0, NK);
-        return stdMtx.trs(keyMtx);
+        return stdOpt.trs(keyMtx);
     }
 
     /**
      * Print all the keys on the screen.
      */
     public void prtAllKey() {
-        System.out.println("Round keys..................");
+        System.out.println("\nRound keys..................");
         int rdKy;
         for (int i = 0; i < WN; i++) {
             rdKy = (key[i][0] << 24) & 0x0ff000000;
@@ -110,6 +110,5 @@ public class keyOpt {
                 System.out.println();
             }
         }
-        System.out.println();
     }
 }

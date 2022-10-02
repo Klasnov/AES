@@ -5,20 +5,19 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * File operation in the AES algorithm
+ * File operation in the AES algorithm.
  * @author Klasnov
  */
 
 public class filOpt {
+    private boolean read;
+    private String filNm;
     private cbcWrk cbc;
+    private File file;
 
     public filOpt(cbcWrk cbc) {
         this.cbc = cbc;
-    }
-
-    public static void main(String[] args) throws IOException {
-        filOpt fil = new filOpt(new cbcWrk());
-        fil.rdFil();
+        this.read = false;
     }
 
     /**
@@ -26,20 +25,22 @@ public class filOpt {
      */
     public void wrtFil() throws IOException {
         boolean ext;
-        String filNam;
-        File file;
         /* Specify the record file */
         Scanner scn = new Scanner(System.in);
-        do {
+        while (true) {
             System.out.println("\nEnter the file name for saving the ciphertext, as \"test.txt\":");
-            filNam = scn.nextLine();
-            file = new File(filNam);
+            filNm = scn.nextLine();
+            file = new File(filNm);
             ext = !file.createNewFile();
             /* If the file has already existed, assure whether to cover it */
-        } while (ext && !jdgLop());
+            if (ext) {
+                System.out.println("The file you specified has already existed. Would you like to cover it?");
+                if (jdgLop()) break;
+            }
+        }
         /* Output the initialization vector and ciphertext */
         FileOutputStream fos = new FileOutputStream(file);
-        fos.write(stdMtx.mtxToAry(cbc.getIV()));
+        fos.write(stdOpt.mtxToAry(cbc.getIV()));
         for (byte[] bts : cbc.getCph()) {
             fos.write(bts);
         }
@@ -51,12 +52,11 @@ public class filOpt {
      * @return If the loaded file needs to be decrypted, return true. Otherwise, return false.
      */
     public boolean rdFil() throws IOException {
+        read = true;
         /* Assure whether the user wants to decrypt the specified file */
         System.out.println("\nWould you like to decrypt the file?");
         if (jdgLop()) {
             /* Specify the file to load in */
-            String filNm;
-            File file;
             cbc = new cbcWrk();
             Scanner scn = new Scanner(System.in);
             while (true) {
@@ -71,30 +71,52 @@ public class filOpt {
                     FileInputStream fis = new FileInputStream(file);
                     /* If the file isn't empty, load in its initialization vector and ciphertext */
                     if ((fis.read(tmp, 0, LEN)) != -1) {
-                        cbc.setIntVec(tmp.clone());
+                        cbc.setIV(tmp.clone());
                         ArrayList<byte[]> cph = new ArrayList<>();
                         while ((fis.read(tmp, 0, LEN)) != -1) {
                             cph.add(tmp.clone());
                         }
                         cbc.setCph(cph);
+                        fis.close();
                         return true;
                     }
                     /* If the file is empty, assure whether the user wants to decrypt */
                     else {
-                        System.out.println("\nThe file you specified is empty!");
+                        System.out.println("The file you specified is empty!");
                         System.out.println("Would you like to decrypt the file?");
-                        if (!jdgLop()) break;
+                        if (!jdgLop()) {
+                            fis.close();
+                            break;
+                        }
                     }
                 }
                 /* If the file doesn't exist, assure whether the user wants to decrypt */
                 else {
-                    System.out.println("\nThe file you specified doesn't exist!");
+                    System.out.println("The file you specified doesn't exist!");
                     System.out.println("Would you like to decrypt the file?");
                     if (!jdgLop()) break;
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Rewrite the plaintext string into specified file. Must be used after filOpt.rdFil().
+     * @param str The plaintext string.
+     */
+    public void rwtFil(String str) throws IOException {
+        /* Judge whether process has read ciphertext from the file */
+        if (read) {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            bw.write(str);
+            bw.flush();
+            bw.close();
+            System.out.println("\nNow you can open " + filNm + " to check the decrypted ciphertext.");
+        }
+        else {
+            System.out.println("Invalid operation! Used filOpt.rwtFil() before filOpt.rdFil().");
+        }
     }
 
     /**

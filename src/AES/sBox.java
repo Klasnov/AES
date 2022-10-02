@@ -48,10 +48,10 @@ public class sBox {
     };
 
     /**
-     * Substitute a 4 × 4 byte matrix
-     * @param a the matrix needed to be substituted
-     * @param type the process is encryption or decryption, use sBox.ENC or SBox.DEC
-     * @return the matrix has been substituted
+     * Substitute a 4 × 4 byte matrix.
+     * @param a the matrix needed to be substituted.
+     * @param type the process is encryption or decryption, use ENC or DEC.
+     * @return the matrix has been substituted.
      */
     public static byte[][] bytSst(byte[][] a, int type) {
         byte[][] b = new byte[N][];
@@ -74,10 +74,10 @@ public class sBox {
     }
 
     /**
-     * Substitute just one byte
-     * @param a The substituting byte
-     * @param type Substitution type, use ENC or DEC
-     * @return The substituted byte
+     * Substitute just one byte.
+     * @param a The substituting byte.
+     * @param type Substitution type, use ENC or DEC.
+     * @return The substituted byte.
      */
     public static byte slgSst(byte a, int type) {
         int r, c;

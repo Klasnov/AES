@@ -1,7 +1,7 @@
 package AES;
 
 /**
- * Finish the row shifting operation in the AES
+ * Finish the row shifting operation in the AES.
  * @author Klasnov
  */
 
@@ -11,10 +11,10 @@ public class shfRow {
     final static public int RIT = 1;
 
     /**
-     * Do the leftwards row shifting of the matrix
-     * @param a The original matrix
-     * @param dir The shift direction, use shfRow.LFT or shfRow.RIT to define
-     * @return The shifted matrix
+     * Do the leftwards row shifting of the matrix.
+     * @param a The original matrix.
+     * @param dir The shift direction, use LFT or RIT to define.
+     * @return The shifted matrix.
      */
     public static byte[][] rowSft(byte[][] a, int dir) {
         byte[][] b = new byte[N][];
@@ -30,10 +30,10 @@ public class shfRow {
     }
 
     /**
-     * Do the leftwards row shifting of one row
-     * @param a The original row of data
-     * @param n The length of the row
-     * @return The shifted row of data
+     * Do the leftwards row shifting of one row.
+     * @param a The original row of data.
+     * @param n The length of the row.
+     * @return The shifted row of data.
      */
     private static byte[] lftOpt(byte[] a, int n) {
         byte[] b = new byte[N];
@@ -45,16 +45,16 @@ public class shfRow {
     }
 
     /**
-     * Do the rightwards row shifting of one row
-     * @param a The original row of data
-     * @param n The length of the row
-     * @return The shifted row of data
+     * Do the rightwards row shifting of one row.
+     * @param a The original row of data.
+     * @param n The length of the row.
+     * @return The shifted row of data.
      */
     private static byte[] ritOpt(byte[] a, int n) {
         byte[] b = new byte[N];
         int i;
         for (i = N - 1; i >= 0; i--) {
-            b[i] = a[(i - n) % N];
+            b[i] = a[(i - n + N) % N];
         }
         return b;
     }

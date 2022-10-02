@@ -2,6 +2,10 @@ import AES.*;
 
 import java.io.IOException;
 
+/**
+ * The entire AES encryption and decryption process demonstration.
+ * @author Klasnov
+ */
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -14,7 +18,8 @@ public class Main {
         filOpt fil = new filOpt(enc.getCbc());
         fil.wrtFil();
         if (fil.rdFil()) {
-
+            aesDec dec = new aesDec(enc.getKey(), fil.getCbc());
+            fil.rwtFil(dec.getPlt());
         }
     }
 }

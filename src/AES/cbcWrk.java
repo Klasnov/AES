@@ -6,13 +6,13 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Cipher block chaining work method
+ * Cipher block chaining work method.
  * @author Klasnov
  */
 
 public class cbcWrk {
     private final int LEN = 16;
-    private final ArrayList<byte[]> plt;
+    private ArrayList<byte[]> plt;
     private ArrayList<byte[]> cph;
     private byte[] intVec;
 
@@ -23,7 +23,7 @@ public class cbcWrk {
     }
 
     /**
-     * Read in the plaintext and ues PKCS7 method to pad it
+     * Read in the plaintext and ues PKCS7 method to pad it.
      */
     public void rdPadPlt() {
         String pltStr;
@@ -91,27 +91,49 @@ public class cbcWrk {
     }
 
     /**
-     * Get the plaintext blocks waiting to be encrypted.
+     * Delete padding characters from the decrypted plaintext.
+     */
+    public void prsPlt() {
+        int idx = plt.size() - 1;
+        byte[] aft = new byte[LEN], bef = plt.remove(idx);
+        byte tmp = bef[LEN - 1];
+        if (tmp != ((byte) 0xff)) {
+            int pad = (tmp & 0x0ff);
+            System.arraycopy(bef, 0, aft, 0, LEN - pad);
+            plt.add(aft);
+        }
+    }
+
+    /**
+     * Set the plaintext of the CBC network.
+     * @param plt The plaintext list.
+     */
+    public void setPlt(ArrayList<byte[]> plt) {
+        this.plt = plt;
+    }
+
+    /**
+     * Get the plaintext.
      * @return Plaintext blocks.
      */
-    public ArrayList<byte[]> getBlk() {
+    public ArrayList<byte[]> getPlt() {
         return plt;
     }
 
     /**
-     * Record the
-     * @param intVec
+     * Record the initialization vector.
+     * @param intVec The initialization vector.
      */
-    public void setIntVec(byte[] intVec) {
+    public void setIV(byte[] intVec) {
         this.intVec = intVec;
     }
 
     /**
-     * Get the initialization vector matrix
-     * @return The initialization vector matrix
+     * Get the initialization vector matrix.
+     * @return The initialization vector matrix.
      */
     public byte[][] getIV() {
-        return stdMtx.aryToMtx(intVec);
+        return stdOpt.aryToMtx(intVec);
     }
 
     /**

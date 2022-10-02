@@ -25,10 +25,10 @@ public class mixCol {
     };
 
     /**
-     * Finish the mix colum matrix multiplication
-     * @param a The matrix needed to be multiplied
-     * @param type Mix or Anti-mix, use minCol
-     * @return The matrix after multiplying
+     * Finish the mix colum matrix multiplication.
+     * @param a The matrix needed to be multiplied.
+     * @param type Mix or Anti-mix, use minCol.
+     * @return The matrix after multiplying.
      */
     public static byte[][] mxCol(byte[][] a, int type) {
         byte[][] b = new byte[N][N];
@@ -49,10 +49,10 @@ public class mixCol {
     }
 
     /**
-     * The multiplication on Galois Field 2 ^ 8
-     * @param a The first multiplier
-     * @param b The second multiplier
-     * @return The multiplied result
+     * The multiplication on Galois Field 2 ^ 8.
+     * @param a The first multiplier.
+     * @param b The second multiplier.
+     * @return The multiplied result.
      */
     private static byte mulGF(byte a, byte b) {
         /* If one of the multiplier is 1, return another multiplier directly*/
