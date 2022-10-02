@@ -95,10 +95,11 @@ public class cbcWrk {
      */
     public void prsPlt() {
         int idx = plt.size() - 1;
-        byte[] aft = new byte[LEN], bef = plt.remove(idx);
+        byte[] aft, bef = plt.remove(idx);
         byte tmp = bef[LEN - 1];
         if (tmp != ((byte) 0xff)) {
             int pad = (tmp & 0x0ff);
+            aft = new byte[LEN - pad];
             System.arraycopy(bef, 0, aft, 0, LEN - pad);
             plt.add(aft);
         }

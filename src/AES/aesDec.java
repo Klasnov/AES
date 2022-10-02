@@ -73,10 +73,10 @@ public class aesDec {
         System.out.println("\nThe plaintext is:");
         StringBuilder str = new StringBuilder();
         for (byte[] bts : cbc.getPlt()) {
-            str.append(new String(bts)).append("\n");
+            str.append(new String(bts));
         }
         plt = str.toString();
-        System.out.print(str);
+        System.out.println(str);
     }
 
     /**

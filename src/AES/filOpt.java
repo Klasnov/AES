@@ -37,6 +37,7 @@ public class filOpt {
                 System.out.println("The file you specified has already existed. Would you like to cover it?");
                 if (jdgLop()) break;
             }
+            else break;
         }
         /* Output the initialization vector and ciphertext */
         FileOutputStream fos = new FileOutputStream(file);
