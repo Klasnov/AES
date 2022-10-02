@@ -30,14 +30,12 @@ public class keyOpt {
 
     public keyOpt() {
         seed = new byte[LEN];
-        rdSed();
-        extKey();
     }
 
     /**
      * Get the seed of encryption's key
      */
-    private void rdSed() {
+    public void rdSed() {
         String ipt;
         System.out.println("\nPlease enter the key which contains 16 chars:");
         Scanner scn = new Scanner(System.in);
@@ -53,7 +51,7 @@ public class keyOpt {
     /**
      * Extend the key seed into sufficient keys used in each round
      */
-    private void extKey() {
+    public void extKey() {
         int cnt, tmpIdx;
         byte[] tmpAry;
         for (cnt = 0; cnt < NK; cnt++) {

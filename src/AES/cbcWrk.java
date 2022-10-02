@@ -13,19 +13,19 @@ import java.util.Scanner;
 public class cbcWrk {
     private final int LEN = 16;
     private final ArrayList<byte[]> plt;
+    private ArrayList<byte[]> cph;
     private byte[] intVec;
 
     public cbcWrk() {
         this.plt = new ArrayList<>();
+        this.cph = new ArrayList<>();
         this.intVec = new byte[LEN];
-        rdPadPlt();
-        rdIV();
     }
 
     /**
      * Read in the plaintext and ues PKCS7 method to pad it
      */
-    private void rdPadPlt() {
+    public void rdPadPlt() {
         String pltStr;
         int i, j, len, rnd, ram;
         byte[] tmp, pad;
@@ -66,7 +66,7 @@ public class cbcWrk {
     /**
      * Read in the initialization of CBC work method.
      */
-    private void rdIV() {
+    public void rdIV() {
         String chc;
         Scanner scn = new Scanner(System.in);
         System.out.println("\nDo you need to set the initial vector manually? " +
@@ -99,10 +99,34 @@ public class cbcWrk {
     }
 
     /**
+     * Record the
+     * @param intVec
+     */
+    public void setIntVec(byte[] intVec) {
+        this.intVec = intVec;
+    }
+
+    /**
      * Get the initialization vector matrix
      * @return The initialization vector matrix
      */
     public byte[][] getIV() {
         return stdMtx.aryToMtx(intVec);
+    }
+
+    /**
+     * Record the ciphertext of the CBC network.
+     * @param cph The ciphertext after encryption.
+     */
+    public void setCph(ArrayList<byte[]> cph) {
+        this.cph = cph;
+    }
+
+    /**
+     * Get the ciphertext of the CBC network.
+     * @return CBC network's ciphertext.
+     */
+    public ArrayList<byte[]> getCph() {
+        return cph;
     }
 }

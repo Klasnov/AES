@@ -14,8 +14,12 @@ public class aesEnc {
     private final cbcWrk cbc;
 
     public aesEnc() {
-        this.key = new keyOpt();
-        this.cbc = new cbcWrk();
+        key = new keyOpt();
+        key.rdSed();
+        key.extKey();
+        cbc = new cbcWrk();
+        cbc.rdPadPlt();
+        cbc.rdIV();
         run();
     }
 
@@ -61,6 +65,7 @@ public class aesEnc {
             cnt++;
         }
         /* Output the ciphertext each byte */
+        cbc.setCph(cph);
         prtCph();
     }
 
