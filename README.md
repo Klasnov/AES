@@ -9,4 +9,4 @@ This repository contains an AES (Advanced Encryption Standard) cipher implementa
 3. The encrypted or decrypted result will be printed on the screen.
 
 ## Reference
-[AES on Wikipedia](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard)https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
+[AES on Wikipedia](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard)
